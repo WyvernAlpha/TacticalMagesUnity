@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37e1b3041f26e774eaa27e6d22dc6436, type: 3}
+  m_Name: FirePawn_Medium
+  m_EditorClassIdentifier: 
+  characterSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  spriteWidth: 0.7
+  spriteHeight: 1
+  spriteTint: {r: 0.751, g: 0.19759797, b: 0, a: 1}
+  health: 6
+  attackDamage: 2
+  movementRange: 2

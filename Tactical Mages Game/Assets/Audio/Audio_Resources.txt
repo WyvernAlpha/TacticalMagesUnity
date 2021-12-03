@@ -1,0 +1,15 @@
+RESOURCES:
+
+Creative Commons Free
+--------------------------
+https://freesound.org/people/ZenithInfinitiveStudios/sounds/376749/ 
+- "SFX_Magic_Shift" / "Fantasy_ui_Button_5.wav"
+
+Free with Attribution
+----------------------------
+https://soundimage.org/looping-music/
+- "MUSIC_Puzzle-Dreams-2" / "Puzzle-Dreams-2"
+- "MUSIC_Blob-Monsters-on-the-Loose" / "Blob-Monsters-on-the-Loose"
+- "MUSIC_Pixel-Drama" / "Pixel-Drama"
+- "MUSIC_Good-Morning-Doctor-Weird" / "Good-Morning-Doctor-Weird"
+- "MUSIC_Automation" / "Automation"
