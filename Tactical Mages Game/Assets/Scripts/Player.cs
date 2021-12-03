@@ -10,6 +10,10 @@ public class Player
 
     public List<GameObject> Pawns { get; private set; } = new List<GameObject>();
 
+    public bool isTurn = false;
+
+    [SerializeField]
+    Pawn selectedPawn = null;
 
     /// <summary>
     /// Constructor for a game player.
@@ -27,11 +31,31 @@ public class Player
         Pawns.Add(pawn);
     }
 
-    //TakeTurn()
-        //Select pawn()
-        //Move pawn()
-        //Attack / Wait phase()
-        //GameManger -> CheckForVictory()
-        //End turn()
 
+    IEnumerator TakeTurn()
+    {
+        if (isTurn)
+        {
+            if (Input.GetButtonDown("Fire1"))
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit))
+                {
+                    if (hit.collider.GetComponent<Tile>())
+                    {
+                        selectedPawn = hit.collider.GetComponent<Tile>().pawn;
+                        if(selectedPawn != null)
+                            selectedPawn.CheckToMove();
+                    }
+                }
+
+                yield return null;
+            }
+            //Move pawn()
+            //Attack / Wait phase()
+            //GameManger -> CheckForVictory()
+            //End turn()
+        }
+    }
 }
