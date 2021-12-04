@@ -84,8 +84,7 @@ public class GameManager : MonoBehaviour
         {
             //If players have pawns, they're still in the game
             if (Players[i].Pawns.Count > 0)
-            {
-                Debug.Log($"Player {Players[i]} has {Players[i].Pawns.Count} remaining");
+            {                
                 //increment players remaining
                 playersRemaining++;
                 //store last known id of player with pawns remaining
@@ -95,14 +94,12 @@ public class GameManager : MonoBehaviour
 
         //If more than 1 player remains, victory is false
         if (playersRemaining > 1)
-        {
-            Debug.Log("More than one player remains.");
+        {            
             return false;
         }
 
         //Store winner id
         WinnerID = tempPlayerID;
-        Debug.Log("Winner! Player " + WinnerID);
 
         //last man standing, return true
         return true;

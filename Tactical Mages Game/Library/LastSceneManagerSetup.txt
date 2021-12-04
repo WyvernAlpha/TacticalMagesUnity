@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 sceneSetups:
-- path: Assets/Scenes/GameScene.unity
+- path: Assets/Scenes/MainMenu.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
-=======
-sceneSetups: []
->>>>>>> Art_&_Animation

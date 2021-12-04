@@ -48,7 +48,7 @@ MonoBehaviour:
   audioSourceMain: {fileID: 946464914953031333}
   audioSourceTransition: {fileID: 946464915576209720}
   gameSceneMusic:
-    clip: {fileID: 8300000, guid: 18fb3f59daf9e9441957b41de0fc462a, type: 3}
+    clip: {fileID: 8300000, guid: 9a7a8eef5a6d851489018bc7e9c2dd80, type: 3}
     volume: 0.5
     pitch: 1
 --- !u!1 &946464914953031332
