@@ -318,3 +318,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pawnData: {fileID: 11400000, guid: dd9b08fa6a552a648ad6c40fd9fd4483, type: 2}
   pawnImage: {fileID: 4509508669271103322}
+  movementSpeed: 1
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 8

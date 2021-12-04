@@ -51,11 +51,14 @@ public class LevelManager : MonoBehaviour
                     spawnPointGroups[i].spawnPoints[j].position,
                     spawnPointGroups[i].spawnPoints[j].rotation);
 
+                pawn.GetComponent<Pawn>().playerID = i;
+
                 //Add instantiated pawn to player's array of pawns
                 GameManager.instance.Players[i].AddPawn(pawn);
             }
         }
 
-        
+        GameManager.instance.ProgressMatch();    
     }
+   
 }

@@ -109,8 +109,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3935c501de3397049ba34ee46c0e7e46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pawn: {fileID: 0}
   tileImage: {fileID: 5070564980359210771}
+  canMoveColor: {r: 0, g: 1, b: 0.084820986, a: 1}
   cost: 1
+  gCost: 0
+  hCost: 0
   neighborTiles: []
   layerMask:
     serializedVersion: 2

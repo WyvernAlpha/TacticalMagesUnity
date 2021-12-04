@@ -9,11 +9,18 @@ public class Pawn : MonoBehaviour
     [SerializeField]
     private PawnData pawnData;
 
+    [HideInInspector]
+    public int playerID;
+
     [SerializeField]
     private Image pawnImage;
 
     [SerializeField, Tooltip("How fast you want this pawn to move across the tiles.")]
     float movementSpeed = 1;
+
+    [SerializeField]
+    LayerMask layerMask;
+    Tile currentTile;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +28,16 @@ public class Pawn : MonoBehaviour
         pawnImage.sprite = pawnData.characterSprite;
         pawnImage.color = pawnData.spriteTint;
         pawnImage.rectTransform.sizeDelta = new Vector2(pawnData.spriteWidth, pawnData.spriteHeight);
+
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, 1, layerMask))
+        {
+            if (hit.collider.GetComponent<Tile>())
+            {
+                currentTile = hit.collider.GetComponent<Tile>();
+                currentTile.pawn = this;
+            }
+        }
     }
 
     // Update is called once per frame
@@ -28,16 +45,15 @@ public class Pawn : MonoBehaviour
     {
 
     }
-    public void CheckToMove()
+    //public List<Tile> ShowMovement()
+    //{
+    //   // currentTile.HighlightTilesToMoveTo(pawnData.movementRange, playerID);
+    //    return currentTile.GetTilesList(pawnData.movementRange, playerID);
+    //}
+
+    public void ShowMovement()
     {
-        RaycastHit hit;
-        if(Physics.Raycast(transform.position, Vector3.down,out hit,1,3))
-        {
-            if(hit.collider.GetComponent<Tile>())
-            {
-                hit.collider.GetComponent<Tile>().HighlightTilesToMoveTo(pawnData.movementRange);
-            }
-        }
+        currentTile.GetTilesList(pawnData.movementRange, playerID);
     }
     public void Move(List<Transform> pathPositions)
     {

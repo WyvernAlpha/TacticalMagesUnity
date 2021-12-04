@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private string gameOverSceneName;
     public int WinnerID { get; private set; }
     public List<Player> Players { get; private set; } = new List<Player>();
+    [SerializeField]
+    int currentTurn = 0;
 
     private void Awake()
     {
@@ -49,6 +51,25 @@ public class GameManager : MonoBehaviour
         }
     }
 
+   public void ProgressMatch()
+    {
+        Debug.Log("Fight!");
+        if(!IsVictory())
+        {
+            TacticalController.instance.StartTurn(Players[currentTurn]);
+        }
+    }
+
+    public void EndTurn()
+    {
+        if (currentTurn < Players.Count)
+            currentTurn++;
+        else
+            currentTurn = 0;
+
+        ProgressMatch();
+    }
+
     public void LoadScene(string sceneToLoad)
     {
         SceneManager.LoadScene(sceneToLoad);
@@ -71,7 +92,7 @@ public class GameManager : MonoBehaviour
 
     public Player GetPlayer(int playerID)
     {
-        return Players[playerID - 1];
+        return Players[playerID];
     }
 
     public bool IsVictory()
