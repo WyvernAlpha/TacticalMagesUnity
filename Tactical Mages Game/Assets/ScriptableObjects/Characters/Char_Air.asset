@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36635d1e1cb90eb4b98a0a03f7f4fb56, type: 3}
+  m_Name: Char_Air
+  m_EditorClassIdentifier: 
+  characterName: Air
+  Type: 3
+  DefaultColor: {r: 0.723, g: 1, b: 0.9586433, a: 1}
+  DefaultSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  SpriteColor: {r: 0.43811, g: 0.965, b: 0.8833691, a: 1}
+  PawnSet:
+  - {fileID: 3905482968845742537, guid: 7227118e9dd96274e81c1668f7456d03, type: 3}
+  - {fileID: 3905482968845742537, guid: 323f64088377c894a8538b7972aef796, type: 3}
+  - {fileID: 3905482968845742537, guid: 2e24de13406da7f4fac838f1d13289c2, type: 3}
+  - {fileID: 3905482968845742537, guid: 2e24de13406da7f4fac838f1d13289c2, type: 3}
+  - {fileID: 3905482968845742537, guid: 323f64088377c894a8538b7972aef796, type: 3}
+  - {fileID: 3905482968845742537, guid: 7227118e9dd96274e81c1668f7456d03, type: 3}
