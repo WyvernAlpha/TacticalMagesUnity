@@ -250,6 +250,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pawn_Water_Base
       objectReference: {fileID: 0}
+    - target: {fileID: 7542683619184463926, guid: c517980a1160c7e429a74488f6e063fe, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c517980a1160c7e429a74488f6e063fe, type: 3}
 --- !u!4 &269063237 stripped
@@ -859,7 +863,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5630049082325410835, guid: 054dfab8ccc202f48ad060ff76ff4386, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5630049082325410839, guid: 054dfab8ccc202f48ad060ff76ff4386, type: 3}
       propertyPath: m_RootOrder
@@ -962,6 +966,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pawn_Air_Base
       objectReference: {fileID: 0}
+    - target: {fileID: 7097273104574079822, guid: 6b52dae909dced643bcedabd24008485, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6b52dae909dced643bcedabd24008485, type: 3}
 --- !u!1001 &1412078961
@@ -974,6 +982,10 @@ PrefabInstance:
     - target: {fileID: 198437591101917378, guid: eedb1a2a4a71a784390743d3c10f9f9e, type: 3}
       propertyPath: m_Name
       value: Pawn_Earth_Base
+      objectReference: {fileID: 0}
+    - target: {fileID: 198437591101917378, guid: eedb1a2a4a71a784390743d3c10f9f9e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198437591101917382, guid: eedb1a2a4a71a784390743d3c10f9f9e, type: 3}
       propertyPath: m_RootOrder
@@ -1080,6 +1092,10 @@ PrefabInstance:
     - target: {fileID: 4509508670924958950, guid: aba7091e9dbfae746ab3398248d32eb7, type: 3}
       propertyPath: m_Name
       value: Pawn_Base
+      objectReference: {fileID: 0}
+    - target: {fileID: 4509508670924958950, guid: aba7091e9dbfae746ab3398248d32eb7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aba7091e9dbfae746ab3398248d32eb7, type: 3}
