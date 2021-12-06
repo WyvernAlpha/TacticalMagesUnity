@@ -78,6 +78,7 @@ public class Tile : MonoBehaviour
                 { 
                     if (neighborTiles[i].pawn != null)
                     {
+                        Debug.Log($"GetTilesList() top: Current turn = {GameManager.instance.currentTurn}; Local PlayerID = {playerID}");
                         Player currentPlayer = GameManager.instance.GetPlayer(playerID);
                         if (!currentPlayer.Pawns.Contains(neighborTiles[i].pawn.gameObject))
                         {
@@ -92,6 +93,7 @@ public class Tile : MonoBehaviour
                         TacticalController.instance.selectableTiles.Add(neighborTiles[i]);
 
                         List<Tile> tiles = new List<Tile>();
+                        Debug.Log($"GetTilesList() else block: Current turn = {GameManager.instance.currentTurn}; Local PlayerID = {playerID}");
                         neighborTiles[i].GetTilesList((maxCost - neighborTiles[i].cost), playerID);
                     }
                 }

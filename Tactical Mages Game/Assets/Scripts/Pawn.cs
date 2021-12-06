@@ -11,8 +11,7 @@ public class Pawn : MonoBehaviour
     [SerializeField]
     private PawnData pawnData;
 
-    [HideInInspector]
-    public int playerID;
+    public int playerID { get; private set; }
 
     [SerializeField]
     private Image pawnImage;
@@ -41,6 +40,11 @@ public class Pawn : MonoBehaviour
         
     }
 
+    public void SetPawnPlayerID(int id)
+    {
+        playerID = id;
+    }
+
     //public List<Tile> ShowMovement()
     //{
     //   // currentTile.HighlightTilesToMoveTo(pawnData.movementRange, playerID);
@@ -49,6 +53,7 @@ public class Pawn : MonoBehaviour
 
     public void ShowMovement()
     {
+        Debug.Log($"Pawn.ShowMovement(): Current turn = {GameManager.instance.currentTurn}; Local PlayerID = {playerID}");
         currentTile.GetTilesList(pawnData.movementRange, playerID);
     }
 

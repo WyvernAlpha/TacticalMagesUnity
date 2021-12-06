@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public int WinnerID { get; private set; }
     [SerializeField]public List<Player> Players { get; private set; } = new List<Player>();
     [SerializeField]
-    int currentTurn = 1;
+    public int currentTurn { get; private set; } = 1;
 
     private void Awake()
     {
@@ -112,6 +112,7 @@ public class GameManager : MonoBehaviour
 
     public Player GetPlayer(int playerID)
     {
+        Debug.Log($"GetPlayer(): Current turn = {currentTurn}; Local PlayerID = {playerID}");
         return Players[playerID-1];
     }
 
