@@ -75,7 +75,7 @@ public class Tile : MonoBehaviour
             {
                 // If the neighbor has been checked already AND can afford to move there...
                 if ((neighborTiles[i].canMoveChecked == false || !TacticalController.instance.selectableTiles.Contains(neighborTiles[i].neighborTiles[i])) && (maxCost - neighborTiles[i].cost) >= 0)
-                {
+                { 
                     if (neighborTiles[i].pawn != null)
                     {
                         Player currentPlayer = GameManager.instance.GetPlayer(playerID);
@@ -93,8 +93,6 @@ public class Tile : MonoBehaviour
 
                         List<Tile> tiles = new List<Tile>();
                         neighborTiles[i].GetTilesList((maxCost - neighborTiles[i].cost), playerID);
-
-
                     }
                 }
             }
@@ -106,5 +104,6 @@ public class Tile : MonoBehaviour
     {
         canMoveChecked = false;
         tileImage.color = baseColor;
+        pawn = null;
     }
 }

@@ -4404,16 +4404,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1041137515}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e570dbe06c765c64a98d512529d9bdec, type: 3}
+  m_Script: {fileID: 11500000, guid: 884a26ab263de7c44aadfbfcdf64b716, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isTurn: 0
   selectedPawn: {fileID: 0}
-  selectableTiles: []
+  hashSetLength: 0
   selectedTile: {fileID: 0}
   layerMask:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 64
 --- !u!4 &1041137517
 Transform:
   m_ObjectHideFlags: 0

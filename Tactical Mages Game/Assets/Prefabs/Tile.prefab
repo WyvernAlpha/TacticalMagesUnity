@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1680146228077729390}
   - component: {fileID: 1680146228077729391}
   - component: {fileID: 6890910188875829829}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,13 +112,15 @@ MonoBehaviour:
   pawn: {fileID: 0}
   tileImage: {fileID: 5070564980359210771}
   canMoveColor: {r: 0, g: 1, b: 0.084820986, a: 1}
+  attackColor: {r: 0, g: 0, b: 0, a: 0}
   cost: 1
   gCost: 0
   hCost: 0
+  canMoveChecked: 0
   neighborTiles: []
   layerMask:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 64
 --- !u!1 &4689261143211185618
 GameObject:
   m_ObjectHideFlags: 0

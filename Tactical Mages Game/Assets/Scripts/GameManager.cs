@@ -10,9 +10,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private string gameSceneName;
     [SerializeField] private string gameOverSceneName;
     public int WinnerID { get; private set; }
-    public List<Player> Players { get; private set; } = new List<Player>();
+    [SerializeField]public List<Player> Players { get; private set; } = new List<Player>();
     [SerializeField]
-    int currentTurn = 0;
+    int currentTurn = 1;
 
     private void Awake()
     {
@@ -54,6 +54,7 @@ public class GameManager : MonoBehaviour
    public void ProgressMatch()
     {
         Debug.Log("Fight!");
+
         if(!IsVictory())
         {
             TacticalController.instance.StartTurn(Players[currentTurn]);
@@ -62,10 +63,10 @@ public class GameManager : MonoBehaviour
 
     public void EndTurn()
     {
-        if (currentTurn < Players.Count)
+        if (currentTurn < Players.Count && currentTurn != Players.Count)
             currentTurn++;
         else
-            currentTurn = 0;
+            currentTurn = 1;
 
         ProgressMatch();
     }
@@ -88,6 +89,7 @@ public class GameManager : MonoBehaviour
         }        
 
         Players = playerList;
+        Debug.Log(Players);
     }
 
     public Player GetPlayer(int playerID)
