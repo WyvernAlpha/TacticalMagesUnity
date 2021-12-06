@@ -2900,7 +2900,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 8.5, y: 0}
-  m_SizeDelta: {x: 110, y: 50}
+  m_SizeDelta: {x: 115, y: 50}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &678316506
 MonoBehaviour:
@@ -2922,7 +2922,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Player 1:'
+  m_text: 'Player 2:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
@@ -2931,8 +2931,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -7651,8 +7651,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -7996,12 +7996,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bc0dfaa02c7fb946a73541f0a539ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backgroundImage: {fileID: 0}
-  playerText: {fileID: 0}
-  instructionsText: {fileID: 0}
-  selectPawnInstructions: 
-  movePawnInstructions: 
-  attackOrPassTurnInstructions: 
+  backgroundImage: {fileID: 1836932338}
+  playerText: {fileID: 678316506}
+  instructionsText: {fileID: 1664449836}
+  selectPawnInstructions: Left click to select a pawn
+  movePawnInstructions: Click a green tile to move pawn
+  attackOrPassTurnInstructions: Click an enemy pawn to attack, or spacebar to pass
+    turn.
+  mockPlayerCharacter1: {fileID: 11400000, guid: dee7ce50f79d24542b1d841e36ec32c8, type: 2}
+  mockPlayerCharacter2: {fileID: 11400000, guid: 527ae0bb0ee1f4b4493fda1586c0d84f, type: 2}
   turnPhase: 0
 --- !u!1001 &1774583534
 PrefabInstance:

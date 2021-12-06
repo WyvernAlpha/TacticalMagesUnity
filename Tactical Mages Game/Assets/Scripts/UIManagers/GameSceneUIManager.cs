@@ -12,6 +12,10 @@ public class GameSceneUIManager : UIManager_Base
     [SerializeField] private string selectPawnInstructions;
     [SerializeField] private string movePawnInstructions;
     [SerializeField] private string attackOrPassTurnInstructions;
+    private int mockPlayerID = 1; //testing only
+    [SerializeField] private Character mockPlayerCharacter1; //testing only
+    [SerializeField] private Character mockPlayerCharacter2; //testing only
+
     public enum TurnPhase
     {
         SelectPawn,
@@ -23,13 +27,34 @@ public class GameSceneUIManager : UIManager_Base
     // Start is called before the first frame update
     void Start()
     {
-        
+        //Begin with player 1 background color
+        ChangeBackgroundColor(mockPlayerCharacter1.DefaultColor);
     }
 
     // Update is called once per frame
     void Update()
     {
         //Testing purposes only
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if ((int)turnPhase <= 1)
+                turnPhase++;
+            else
+            {
+                turnPhase = 0;
+                if (mockPlayerID == 1)
+                {
+                    mockPlayerID = 2;
+                }
+                else
+                {
+                    mockPlayerID = 1;
+                }
+                
+            }
+
+            ProgressTurnPhase(mockPlayerID, turnPhase);
+        }
     }
 
     public void ChangeBackgroundColor(Color color)
@@ -39,7 +64,7 @@ public class GameSceneUIManager : UIManager_Base
 
     public void SetPlayerText(int playerID)
     {
-        playerText.SetText($"Player {playerID.ToString()}");
+        playerText.SetText($"Player {playerID.ToString()}:");
     }
 
     private void SetInstructionsText(string text)
@@ -54,6 +79,14 @@ public class GameSceneUIManager : UIManager_Base
             case TurnPhase.SelectPawn:
                 SetPlayerText(playerID);
                 SetInstructionsText(selectPawnInstructions);
+                if (backgroundImage.color == mockPlayerCharacter1.DefaultColor)
+                {
+                    backgroundImage.color = mockPlayerCharacter2.DefaultColor;
+                }
+                else
+                {
+                    backgroundImage.color = mockPlayerCharacter1.DefaultColor;
+                }
                 break;
 
             case TurnPhase.MovePawn:
@@ -63,6 +96,7 @@ public class GameSceneUIManager : UIManager_Base
             case TurnPhase.AttackOrPass:
                 SetInstructionsText(attackOrPassTurnInstructions);
                 break;
+
             default:
                 Debug.Log("Turn phase not implemented");
                 break;
