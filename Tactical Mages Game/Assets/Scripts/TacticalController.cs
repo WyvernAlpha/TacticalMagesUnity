@@ -36,15 +36,15 @@ public class TacticalController : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    public void StartTurn(int playerID)
+    public void StartTurn()
     {
         Debug.Log("Turn started.");
         isTurn = true;
-        StartCoroutine(TakeTurn(playerID));
+        StartCoroutine(TakeTurn());
     }
 
 
-    IEnumerator TakeTurn(int playerID)
+    IEnumerator TakeTurn()
     {
         while (isTurn)
         {
@@ -62,7 +62,8 @@ public class TacticalController : MonoBehaviour
                         previousPawn = selectedPawn;
                         selectedPawn = hit.collider.GetComponent<Tile>().pawn;
 
-                        if (selectedPawn != null && GameManager.instance.Players[playerID-1].Pawns.Contains(selectedPawn.gameObject))
+                        //Debug.Log($"TakeTurn() local playerID is: {playerID}");
+                        if (selectedPawn != null && GameManager.instance.Players[GameManager.instance.currentTurn - 1].Pawns.Contains(selectedPawn.gameObject))
                         {
                             ClearPrevSelectables();
                             selectedPawn.ShowMovement();

@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
         if(!IsVictory())
         {
             Debug.Log("Current turn: " + currentTurn);
-            TacticalController.instance.StartTurn(currentTurn);
+            TacticalController.instance.StartTurn();
         }
     }
 

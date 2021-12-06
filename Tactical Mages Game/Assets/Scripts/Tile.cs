@@ -64,7 +64,7 @@ public class Tile : MonoBehaviour
     }
 
     
-    public void GetTilesList(int maxCost, int playerID)
+    public void GetTilesList(int maxCost)
     {
         // This starting tile has been checked to be moveable to.
         canMoveChecked = true;
@@ -78,8 +78,8 @@ public class Tile : MonoBehaviour
                 { 
                     if (neighborTiles[i].pawn != null)
                     {
-                        Debug.Log($"GetTilesList() top: Current turn = {GameManager.instance.currentTurn}; Local PlayerID = {playerID}");
-                        Player currentPlayer = GameManager.instance.GetPlayer(playerID);
+                        //Debug.Log($"GetTilesList() top: Current turn = {GameManager.instance.currentTurn}; Local PlayerID = {playerID}");
+                        Player currentPlayer = GameManager.instance.GetPlayer(GameManager.instance.currentTurn);
                         if (!currentPlayer.Pawns.Contains(neighborTiles[i].pawn.gameObject))
                         {
                             TacticalController.instance.selectableTiles.Add(neighborTiles[i]);
@@ -93,8 +93,8 @@ public class Tile : MonoBehaviour
                         TacticalController.instance.selectableTiles.Add(neighborTiles[i]);
 
                         List<Tile> tiles = new List<Tile>();
-                        Debug.Log($"GetTilesList() else block: Current turn = {GameManager.instance.currentTurn}; Local PlayerID = {playerID}");
-                        neighborTiles[i].GetTilesList((maxCost - neighborTiles[i].cost), playerID);
+                        //Debug.Log($"GetTilesList() else block: Current turn = {GameManager.instance.currentTurn}; Local PlayerID = {playerID}");
+                        neighborTiles[i].GetTilesList(maxCost - neighborTiles[i].cost);
                     }
                 }
             }

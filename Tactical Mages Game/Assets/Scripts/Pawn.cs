@@ -3,15 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-//SCRIPTS FOLDER - LYNDSEY
-
 public class Pawn : MonoBehaviour
 {
     [Tooltip("The pawn data object for this pawn.")]
     [SerializeField]
     private PawnData pawnData;
-
-    public int playerID { get; private set; }
 
     [SerializeField]
     private Image pawnImage;
@@ -40,11 +36,6 @@ public class Pawn : MonoBehaviour
         
     }
 
-    public void SetPawnPlayerID(int id)
-    {
-        playerID = id;
-    }
-
     //public List<Tile> ShowMovement()
     //{
     //   // currentTile.HighlightTilesToMoveTo(pawnData.movementRange, playerID);
@@ -53,8 +44,8 @@ public class Pawn : MonoBehaviour
 
     public void ShowMovement()
     {
-        Debug.Log($"Pawn.ShowMovement(): Current turn = {GameManager.instance.currentTurn}; Local PlayerID = {playerID}");
-        currentTile.GetTilesList(pawnData.movementRange, playerID);
+        //Debug.Log($"Pawn.ShowMovement(): Current turn = {GameManager.instance.currentTurn}; Local PlayerID = {playerID}");
+        currentTile.GetTilesList(pawnData.movementRange);
     }
 
 

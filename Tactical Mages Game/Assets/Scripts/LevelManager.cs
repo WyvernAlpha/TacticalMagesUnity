@@ -51,8 +51,6 @@ public class LevelManager : MonoBehaviour
                     spawnPointGroups[i].spawnPoints[j].position,
                     spawnPointGroups[i].spawnPoints[j].rotation);
 
-                pawn.GetComponent<Pawn>().SetPawnPlayerID(i + 1);
-
                 //Add instantiated pawn to player's array of pawns
                 GameManager.instance.Players[i].AddPawn(pawn);
             }
