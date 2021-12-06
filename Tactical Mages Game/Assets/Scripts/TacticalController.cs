@@ -72,7 +72,7 @@ public class TacticalController : MonoBehaviour
                         {                            
                             ClearPrevSelectables();
 
-                            MovePawn(previousPawn.gameObject, selectedTile.transform.position);
+                            MovePawn(previousPawn, selectedTile.transform.position);
                             previousPawn.GetCurrentTile();
                             isTurn = false;
                             GameManager.instance.EndTurn();
@@ -96,16 +96,27 @@ public class TacticalController : MonoBehaviour
 
     void ClearPrevSelectables()
     {
-        foreach(Tile tile in selectableTiles)
+        //foreach(Tile tile in selectableTiles)
+        //{
+        //    tile.Unselect();
+        //}
+
+        Tile[] tiles = new Tile[selectableTiles.Count];
+
+        selectableTiles.CopyTo(tiles);
+
+        for (int i = 0; i < tiles.Length; i++)
         {
-            tile.Unselect();
+            tiles[i].Unselect();
         }
+
         selectableTiles.Clear();
         hashSetLength = selectableTiles.Count;
     }
 
-    void MovePawn(GameObject pawn, Vector3 position)
+    void MovePawn(Pawn pawn, Vector3 position)
     {
+        pawn.currentTile.pawn = null;
         pawn.transform.position = new Vector3(position.x, 0.15f, position.z);
     }
     

@@ -17,7 +17,7 @@ public class Pawn : MonoBehaviour
 
     [SerializeField]
     LayerMask layerMask;
-    Tile currentTile;
+    public Tile currentTile;
 
     // Start is called before the first frame update
     void Start()
