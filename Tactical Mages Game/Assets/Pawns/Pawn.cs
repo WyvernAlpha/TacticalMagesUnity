@@ -24,12 +24,8 @@
 //    //LayerMask layerMask;
 //    //Tile currentTile;
 
-//    // Start is called before the first frame update
-//    //void Start()
-//    //{
-//    //    pawnImage.sprite = pawnData.characterSprite;
-//    //    pawnImage.color = pawnData.spriteTint;
-//    //    pawnImage.rectTransform.sizeDelta = new Vector2(pawnData.spriteWidth, pawnData.spriteHeight);
+        GetCurrentTile();
+    }
 
 //    //    RaycastHit hit;
 //    //    if (Physics.Raycast(transform.position, Vector3.down, out hit, 1, layerMask))
@@ -46,12 +42,26 @@
 //    //void Update()
 //    //{
 
-//    //}
-//    //public List<Tile> ShowMovement()
-//    //{
-//    //   // currentTile.HighlightTilesToMoveTo(pawnData.movementRange, playerID);
-//    //    return currentTile.GetTilesList(pawnData.movementRange, playerID);
-//    //}
+    public void GetCurrentTile()
+    {
+        RaycastHit hit;
+        Physics.Raycast(this.transform.position, Vector3.down, out hit, 1, layerMask);
+
+        if (hit.collider.GetComponent<Tile>())
+        {
+            currentTile = hit.collider.GetComponent<Tile>();
+            currentTile.pawn = this;
+        }
+    }
+
+    public void ShowMovement()
+    {
+        currentTile.GetTilesList(pawnData.movementRange, playerID);
+    }
+
+    public void Move(List<Transform> pathPositions)
+    {
+        //TODO: Move this character to the target location
 
 //    //public void ShowMovement()
 //    //{

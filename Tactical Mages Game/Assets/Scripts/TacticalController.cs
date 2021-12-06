@@ -70,11 +70,12 @@ public class TacticalController : MonoBehaviour
                         {
                             //Move pawn()
                             ClearPrevSelectables();
-                            MovePawn(previousPawn.gameObject, selectedTile.transform.position);
 
+                            MovePawn(previousPawn.gameObject, selectedTile.transform.position);
+                            previousPawn.GetCurrentTile();
+                            isTurn = false;
                             GameManager.instance.EndTurn();
                         }
-
                     }
                 }
 
