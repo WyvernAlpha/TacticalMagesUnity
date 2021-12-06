@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-//SCRIPTS FOLDER - LYNDSEY
-
 public class Pawn : MonoBehaviour
 {
     [Tooltip("The pawn data object for this pawn.")]
@@ -29,8 +27,7 @@ public class Pawn : MonoBehaviour
     {
         pawnImage.sprite = pawnData.characterSprite;
         pawnImage.color = pawnData.spriteTint;
-        pawnImage.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, pawnData.spriteWidth);
-        pawnImage.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, pawnData.spriteHeight);
+        pawnImage.rectTransform.sizeDelta = new Vector2(pawnData.spriteWidth, pawnData.spriteHeight);
 
         RaycastHit hit;
         if (Physics.Raycast(transform.position, Vector3.down, out hit, 1, layerMask))
@@ -41,21 +38,23 @@ public class Pawn : MonoBehaviour
                 currentTile.pawn = this;
             }
         }
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
+    //public List<Tile> ShowMovement()
+    //{
+    //   // currentTile.HighlightTilesToMoveTo(pawnData.movementRange, playerID);
+    //    return currentTile.GetTilesList(pawnData.movementRange, playerID);
+    //}
 
     public void ShowMovement()
     {
         currentTile.GetTilesList(pawnData.movementRange, playerID);
     }
-
-
     public void Move(List<Transform> pathPositions)
     {
         //TODO: Move this character to the target location
