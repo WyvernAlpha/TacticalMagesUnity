@@ -49,6 +49,23 @@ public class GameManager : MonoBehaviour
                 LoadScene(gameOverSceneName);
             }
         }
+
+        //Debug Pawns
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            for (int i = 0; i < Players[0].Pawns.Count; i++)
+            {
+                Debug.Log($"Player 1 Pawn #{i + 1}: {Players[0].Pawns[i].name}");
+            }
+
+            for (int i = 0; i < Players[1].Pawns.Count; i++)
+            {
+                Debug.Log($"Player 2 Pawn#{i + 1}: {Players[1].Pawns[i].name}");
+            }
+
+            Debug.Log($"Player 1 has {Players[0].Pawns.Count} pawns");
+            Debug.Log($"Player 2 has {Players[1].Pawns.Count} pawns");
+        }
     }
 
    public void ProgressMatch()
@@ -57,12 +74,13 @@ public class GameManager : MonoBehaviour
 
         if(!IsVictory())
         {
-            TacticalController.instance.StartTurn(Players[currentTurn]);
+            Debug.Log("Current turn: " + currentTurn);
+            TacticalController.instance.StartTurn(currentTurn);
         }
     }
 
     public void EndTurn()
-    {
+    {        
         if (currentTurn < Players.Count && currentTurn != Players.Count)
             currentTurn++;
         else
@@ -89,12 +107,12 @@ public class GameManager : MonoBehaviour
         }        
 
         Players = playerList;
-        Debug.Log(Players);
+        Debug.Log("Player Count: " + Players.Count);
     }
 
     public Player GetPlayer(int playerID)
     {
-        return Players[playerID];
+        return Players[playerID-1];
     }
 
     public bool IsVictory()

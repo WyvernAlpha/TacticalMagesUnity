@@ -24,8 +24,8 @@
 //    //LayerMask layerMask;
 //    //Tile currentTile;
 
-        GetCurrentTile();
-    }
+    //    GetCurrentTile();
+    //}
 
 //    //    RaycastHit hit;
 //    //    if (Physics.Raycast(transform.position, Vector3.down, out hit, 1, layerMask))
@@ -42,25 +42,25 @@
 //    //void Update()
 //    //{
 
-    public void GetCurrentTile()
-    {
-        RaycastHit hit;
-        Physics.Raycast(this.transform.position, Vector3.down, out hit, 1, layerMask);
+    //public void GetCurrentTile()
+    //{
+    //    RaycastHit hit;
+    //    Physics.Raycast(this.transform.position, Vector3.down, out hit, 1, layerMask);
 
-        if (hit.collider.GetComponent<Tile>())
-        {
-            currentTile = hit.collider.GetComponent<Tile>();
-            currentTile.pawn = this;
-        }
-    }
+    //    if (hit.collider.GetComponent<Tile>())
+    //    {
+    //        currentTile = hit.collider.GetComponent<Tile>();
+    //        currentTile.pawn = this;
+    //    }
+    //}
 
-    public void ShowMovement()
-    {
-        currentTile.GetTilesList(pawnData.movementRange, playerID);
-    }
+    //public void ShowMovement()
+    //{
+    //    currentTile.GetTilesList(pawnData.movementRange, playerID);
+    //}
 
-    public void Move(List<Transform> pathPositions)
-    {
+    //public void Move(List<Transform> pathPositions)
+    //{
         //TODO: Move this character to the target location
 
 //    //public void ShowMovement()

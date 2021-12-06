@@ -26,7 +26,7 @@ public class TacticalController : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(this.gameObject);
+            //DontDestroyOnLoad(this.gameObject);
         }
         else
         {
@@ -36,7 +36,7 @@ public class TacticalController : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    public void StartTurn(Player playerID)
+    public void StartTurn(int playerID)
     {
         Debug.Log("Turn started.");
         isTurn = true;
@@ -44,7 +44,7 @@ public class TacticalController : MonoBehaviour
     }
 
 
-    IEnumerator TakeTurn(Player playerID)
+    IEnumerator TakeTurn(int playerID)
     {
         while (isTurn)
         {
@@ -61,14 +61,14 @@ public class TacticalController : MonoBehaviour
                         selectedTile = hit.collider.GetComponent<Tile>();
                         previousPawn = selectedPawn;
                         selectedPawn = hit.collider.GetComponent<Tile>().pawn;
-                        if (selectedPawn != null && playerID.Pawns.Contains(selectedPawn.gameObject))
+
+                        if (selectedPawn != null && GameManager.instance.Players[playerID-1].Pawns.Contains(selectedPawn.gameObject))
                         {
                             ClearPrevSelectables();
                             selectedPawn.ShowMovement();
                         }
                         else if (selectedPawn == null && previousPawn != null && selectableTiles.Contains(selectedTile))
-                        {
-                            //Move pawn()
+                        {                            
                             ClearPrevSelectables();
 
                             MovePawn(previousPawn.gameObject, selectedTile.transform.position);

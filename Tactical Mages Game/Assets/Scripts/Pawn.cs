@@ -32,16 +32,7 @@ public class Pawn : MonoBehaviour
         pawnImage.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, pawnData.spriteWidth);
         pawnImage.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, pawnData.spriteHeight);
 
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, 1, layerMask))
-        {
-            if (hit.collider.GetComponent<Tile>())
-            {
-                currentTile = hit.collider.GetComponent<Tile>();
-                currentTile.pawn = this;
-            }
-        }
-
+        GetCurrentTile();  
     }
 
     // Update is called once per frame
@@ -50,11 +41,29 @@ public class Pawn : MonoBehaviour
         
     }
 
+    //public List<Tile> ShowMovement()
+    //{
+    //   // currentTile.HighlightTilesToMoveTo(pawnData.movementRange, playerID);
+    //    return currentTile.GetTilesList(pawnData.movementRange, playerID);
+    //}
+
     public void ShowMovement()
     {
         currentTile.GetTilesList(pawnData.movementRange, playerID);
     }
 
+
+    public void GetCurrentTile()
+    {
+        RaycastHit hit;
+        Physics.Raycast(this.transform.position, Vector3.down, out hit, 1, layerMask);
+
+        if (hit.collider.GetComponent<Tile>())
+        {
+            currentTile = hit.collider.GetComponent<Tile>();
+            currentTile.pawn = this;
+        }
+    }
 
     public void Move(List<Transform> pathPositions)
     {
