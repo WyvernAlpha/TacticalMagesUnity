@@ -18,4 +18,5 @@ MonoBehaviour:
   spriteTint: {r: 1, g: 1, b: 1, a: 1}
   health: 12
   attackDamage: 3
+  attackRotationSpeed: 1
   movementRange: 1

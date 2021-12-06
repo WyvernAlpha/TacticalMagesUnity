@@ -33,7 +33,7 @@ public class LevelManager : MonoBehaviour
     }
 
     private void SpawnPawns()
-    {
+    {        
         //For all players
         for (int i = 0; i < GameManager.instance.Players.Count; i++)
         {

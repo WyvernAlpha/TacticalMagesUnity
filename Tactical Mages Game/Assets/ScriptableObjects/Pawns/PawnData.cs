@@ -23,6 +23,18 @@ public class PawnData : ScriptableObject
     [Tooltip("How much damage does one attack deal?")]
     public int attackDamage = 1;
 
+    [Tooltip("How fast does the pawn turn to face its opponent?")]
+    public float attackRotationSpeed = 1.0f;
+
+    [Tooltip("How fast does the pawn attack its opponent?")]
+    public float attackMovementSpeed = 1.5f;
+
+    [Tooltip("Clip to play when attacking opponent.")]
+    public AudioClip attackSound;
+
+    [Range(0,1)]
+    public float attackSoundVolume = 1.0f;
+
     [Tooltip("How many squares can this character move in a turn?")]
     public int movementRange = 1;
 
