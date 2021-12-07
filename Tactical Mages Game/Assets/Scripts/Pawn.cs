@@ -33,15 +33,16 @@ public class Pawn : MonoBehaviour
         pawnImage.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, pawnData.spriteWidth);
         pawnImage.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, pawnData.spriteHeight);
 
-        GetCurrentTile();  
-    }
+        GetCurrentTile();
+
 
         health = pawnData.health;
         attackDamage = pawnData.attackDamage;
         attackRotationSpeed = pawnData.attackRotationSpeed;
         attackMovementSpeed = pawnData.attackMovementSpeed;
         movementRange = pawnData.movementRange;
-}
+
+    }
 
     // Update is called once per frame
     void Update()
