@@ -18,6 +18,13 @@ public class Pawn : MonoBehaviour
     [SerializeField]
     private Image pawnImage;
 
+    [SerializeField, Tooltip("How fast you want this pawn to move across the tiles.")]
+    float movementSpeed = 1;
+
+    [SerializeField]
+    LayerMask layerMask;
+    public Tile currentTile;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +32,9 @@ public class Pawn : MonoBehaviour
         pawnImage.color = pawnData.spriteTint;
         pawnImage.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, pawnData.spriteWidth);
         pawnImage.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, pawnData.spriteHeight);
+
+        GetCurrentTile();  
+    }
 
         health = pawnData.health;
         attackDamage = pawnData.attackDamage;
@@ -39,12 +49,46 @@ public class Pawn : MonoBehaviour
         
     }
 
-    public void Move(Vector3 targetLocation)
+    //public List<Tile> ShowMovement()
+    //{
+    //   // currentTile.HighlightTilesToMoveTo(pawnData.movementRange, playerID);
+    //    return currentTile.GetTilesList(pawnData.movementRange, playerID);
+    //}
+
+    public void ShowMovement()
+    {
+        //Debug.Log($"Pawn.ShowMovement(): Current turn = {GameManager.instance.currentTurn}; Local PlayerID = {playerID}");
+        currentTile.GetTilesList(pawnData.movementRange);
+    }
+
+
+    public void GetCurrentTile()
+    {
+        RaycastHit hit;
+        Physics.Raycast(this.transform.position, Vector3.down, out hit, 1, layerMask);
+
+        if (hit.collider.GetComponent<Tile>())
+        {
+            currentTile = hit.collider.GetComponent<Tile>();
+            currentTile.pawn = this;
+        }
+    }
+
+    public void Move(List<Transform> pathPositions)
     {
         //TODO: Move this character to the target location
 
         //Set this position to the target location (Short and temporary solution before lerp)
         //transform.position = targetLocation;
+    }
+
+    IEnumerator MoveTo(Vector3 position)
+    {
+        if (transform.position != new Vector3(position.x, 0.25f, position.z))
+        {
+            Vector3.MoveTowards(transform.position, position + Vector3.up, movementSpeed * Time.deltaTime);
+            yield return null;
+        }
     }
 
     public void Attack(Pawn opponentPawn)

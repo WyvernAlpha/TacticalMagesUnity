@@ -56,6 +56,7 @@ public class LevelManager : MonoBehaviour
             }
         }
 
-        
+        GameManager.instance.ProgressMatch();    
     }
+   
 }
