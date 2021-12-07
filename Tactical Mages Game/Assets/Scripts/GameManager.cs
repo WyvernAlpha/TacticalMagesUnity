@@ -100,6 +100,7 @@ public class GameManager : MonoBehaviour
         else
             currentTurn = 1;
 
+        Debug.Log("New turn: " + currentTurn);
         ProgressMatch();
     }
 
@@ -127,7 +128,7 @@ public class GameManager : MonoBehaviour
 
     public Player GetPlayer(int playerID)
     {
-        Debug.Log($"GetPlayer(): Current turn = {currentTurn}; Local PlayerID = {playerID}");
+        //Debug.Log($"GetPlayer(): Current turn = {currentTurn}; Local PlayerID = {playerID}");
         return Players[playerID-1];
     }
 

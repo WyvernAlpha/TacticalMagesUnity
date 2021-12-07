@@ -5,7 +5,7 @@ using UnityEngine;
 public class TacticalController : MonoBehaviour
 {
     public static TacticalController instance;
-    public bool isTurn = false;
+    //public bool isMovementPhase = false;
 
     [SerializeField]
     Pawn selectedPawn = null;
@@ -38,58 +38,140 @@ public class TacticalController : MonoBehaviour
     // Start is called before the first frame update
     public void StartTurn()
     {
-        Debug.Log("Turn started.");
-        isTurn = true;
+        Debug.Log($"Player {GameManager.instance.currentTurn} turn started.");
         StartCoroutine(TakeTurn());
     }
 
 
-    IEnumerator TakeTurn()
+    private IEnumerator TakeTurn()
     {
-        while (isTurn)
+        //MOVEMENT PHASE
+        GameSceneUIManager.instance.UpdateTurnPhaseUI(GameSceneUIManager.TurnPhase.MovePawn); // update UI
+        Debug.Log($"Player {GameManager.instance.currentTurn} MOVEMENT PHASE");        
+        bool isMovementPhase = true;
+        while (isMovementPhase)
         {
-            if (Input.GetButtonDown("Fire1"))
+            //If player presses spacebar, skip movement phase
+            if (Input.GetKeyDown(KeyCode.Space))
             {
+                ClearPrevSelectables(); //deselect tiles
+                isMovementPhase = false;  //end movement phase phase
+            }
 
+            //If player clicks left mouse
+            else if (Input.GetButtonDown("Fire1"))
+            {
+                //Raycast to check what they clicked on
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
+
+                //If Raycast hit the tile layer (ie: layerMask)
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
                 {
+                    //If the tile has a tile component
                     if (hit.collider.GetComponent<Tile>())
                     {
-                        previousTile = selectedTile;
-                        selectedTile = hit.collider.GetComponent<Tile>();
-                        previousPawn = selectedPawn;
-                        selectedPawn = hit.collider.GetComponent<Tile>().pawn;
+                        previousTile = selectedTile;                            //Store previous tile
+                        selectedTile = hit.collider.GetComponent<Tile>();       //Selected tile is the one we just clicked on
+                        previousPawn = selectedPawn;                            //Store Previous pawn is the one last selected
+                        selectedPawn = hit.collider.GetComponent<Tile>().pawn;  //Current selected pawn is the one on top of this tile  
 
-                        //Debug.Log($"TakeTurn() local playerID is: {playerID}");
+                        //If the player selected a pawn and it belongs to the current player
                         if (selectedPawn != null && GameManager.instance.Players[GameManager.instance.currentTurn - 1].Pawns.Contains(selectedPawn.gameObject))
                         {
+                            //Clear previous selected highlights tiles
                             ClearPrevSelectables();
-                            selectedPawn.ShowMovement();
+                            //Show movement for selected pawn
+                            selectedPawn.ShowMovement();                            
                         }
+                        ///Else if the player selected an empty tile that is able to move their previous pawn to
                         else if (selectedPawn == null && previousPawn != null && selectableTiles.Contains(selectedTile))
-                        {                            
-                            ClearPrevSelectables();
-
-                            MovePawn(previousPawn, selectedTile.transform.position);
-                            previousPawn.GetCurrentTile();
-                            isTurn = false;
-                            GameManager.instance.EndTurn();
+                        {  
+                            MovePawn(previousPawn, selectedTile.transform.position);    //Move pawn to that tile                            
+                            previousPawn.GetCurrentTile();                              //Assign tile to pawn
+                            isMovementPhase = false;                                        //Selction phase is compelte
+                            //GameManager.instance.EndTurn();                             //End Turn
+                        }
+                        else
+                        {
+                            Debug.Log("Unanticipated condition in movement phase.");
                         }
                     }
                 }
-
-
             }
-            if (Input.GetKeyDown(KeyCode.F))
-                ClearPrevSelectables();
-             
-            //Attack / Wait phase() 
-            //GameManger -> CheckForVictory() 
-            //End turn() 
+            
             yield return null;
         }
+
+        //ATTACK PHASE
+        GameSceneUIManager.instance.UpdateTurnPhaseUI(GameSceneUIManager.TurnPhase.AttackOrPass); // update UI
+        Debug.Log($"Player {GameManager.instance.currentTurn} ATTACK PHASE");
+        bool isAttackPhase = true;
+        while (isAttackPhase)
+        {
+            //If player presses spacebar, skip attack phase
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                ClearPrevSelectables(); //deselect tiles
+                isAttackPhase = false;  //end attach phase
+            }
+
+            //If player clicks left mouse
+            else if (Input.GetButtonDown("Fire1"))
+            {
+                //Raycast to check what they clicked on
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+
+                //If Raycast hit the tile layer (ie: layerMask)
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+                {
+                    //If the tile has a tile component
+                    if (hit.collider.GetComponent<Tile>())
+                    {
+                        selectedTile = hit.collider.GetComponent<Tile>();       //Selected tile is the one we just clicked on
+                        previousPawn = selectedPawn;                            //Store Previous pawn is the one last selected
+                        selectedPawn = selectedTile.pawn;                       //Current selected pawn is the one on top of this tile
+
+                        //If the player selected a pawn and it belongs to the current player
+                        if (selectedPawn != null && GameManager.instance.Players[GameManager.instance.currentTurn - 1].Pawns.Contains(selectedPawn.gameObject))
+                        {
+                            //Clear previous selected highlights tiles
+                            ClearPrevSelectables();
+                            //TODO: Show enemy's in range for selected pawn
+                            selectedPawn.ShowMovement(); // change to ShowEnemysInRange();
+                        }
+
+                        //Else if the player selected an enemy pawn that is in range of their pawn
+                        else if (selectedPawn != null && previousPawn != null && selectableTiles.Contains(selectedTile))                        
+                        {
+                            //if the previous pawn is mine
+                            if (GameManager.instance.Players[GameManager.instance.currentTurn - 1].Pawns.Contains(previousPawn.gameObject))
+                            {
+                                //Clear the tile highlights
+                                ClearPrevSelectables();
+
+                                //Attack the enemy pawn with my pawn and end attack phase
+                                previousPawn.Attack(selectedPawn);
+                                isAttackPhase = false;
+                            }
+                        }
+                        else
+                        {
+                            Debug.Log($"Unanticipated condition in Attack Phase.");
+                        }
+                    }
+                }
+            }
+
+            yield return null;
+        }
+
+
+        //GameManger -> CheckForVictory() (actually better to do this in pawn OnDestroy() event)
+
+        //End Turn
+        GameManager.instance.EndTurn();
     }
 
     

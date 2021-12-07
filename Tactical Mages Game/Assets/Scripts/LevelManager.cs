@@ -23,7 +23,8 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SpawnPawns();        
+        SpawnPawns();
+        GameManager.instance.ProgressMatch();
     }
 
     // Update is called once per frame
@@ -55,8 +56,6 @@ public class LevelManager : MonoBehaviour
                 GameManager.instance.Players[i].AddPawn(pawn);
             }
         }
-
-        GameManager.instance.ProgressMatch();    
     }
    
 }

@@ -6,55 +6,40 @@ using TMPro;
 
 public class GameSceneUIManager : UIManager_Base
 {
+    public static GameSceneUIManager instance;
     [SerializeField] Image backgroundImage;
     [SerializeField] TextMeshProUGUI playerText;
     [SerializeField] TextMeshProUGUI instructionsText;
-    [SerializeField] private string selectPawnInstructions;
-    [SerializeField] private string movePawnInstructions;
-    [SerializeField] private string attackOrPassTurnInstructions;
-    private int mockPlayerID = 1; //testing only
-    [SerializeField] private Character mockPlayerCharacter1; //testing only
-    [SerializeField] private Character mockPlayerCharacter2; //testing only
-
+    [SerializeField] private string movePawnInstructions = string.Empty;
+    [SerializeField] private string attackOrPassTurnInstructions = string.Empty;
+        
     public enum TurnPhase
     {
-        SelectPawn,
         MovePawn,
         AttackOrPass
     }
-    public TurnPhase turnPhase = TurnPhase.SelectPawn;
-    
+    //[HideInInspector]
+    //public TurnPhase turnPhase = TurnPhase.MovePawn;
+
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Debug.Log($"Additional GameSceneUIManager was found and destroyed object {this.name}.");
+            Destroy(this.gameObject);
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        //Begin with player 1 background color
-        ChangeBackgroundColor(mockPlayerCharacter1.DefaultColor);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //Testing purposes only
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if ((int)turnPhase <= 1)
-                turnPhase++;
-            else
-            {
-                turnPhase = 0;
-                if (mockPlayerID == 1)
-                {
-                    mockPlayerID = 2;
-                }
-                else
-                {
-                    mockPlayerID = 1;
-                }
-                
-            }
-
-            ProgressTurnPhase(mockPlayerID, turnPhase);
-        }
+        //Begin proper UI for the first phase of the turn
+        UpdateTurnPhaseUI((TurnPhase)1);
     }
 
     public void ChangeBackgroundColor(Color color)
@@ -72,23 +57,18 @@ public class GameSceneUIManager : UIManager_Base
         instructionsText.SetText(text);
     }
 
-    private void ProgressTurnPhase(int playerID, TurnPhase phase)
+    public void UpdateTurnPhaseUI(TurnPhase phase)
     {
+        //If it's the first phase of the turn, set appropriate player color and prompt
+        if ((int)phase == 0)
+        {
+            SetPlayerText(GameManager.instance.currentTurn);
+            ChangeBackgroundColor(GameManager.instance.Players[GameManager.instance.currentTurn - 1].Character.DefaultColor);
+        }
+        
+        //Update instuctions text per phase
         switch (phase)
         {
-            case TurnPhase.SelectPawn:
-                SetPlayerText(playerID);
-                SetInstructionsText(selectPawnInstructions);
-                if (backgroundImage.color == mockPlayerCharacter1.DefaultColor)
-                {
-                    backgroundImage.color = mockPlayerCharacter2.DefaultColor;
-                }
-                else
-                {
-                    backgroundImage.color = mockPlayerCharacter1.DefaultColor;
-                }
-                break;
-
             case TurnPhase.MovePawn:
                 SetInstructionsText(movePawnInstructions);
                 break;
@@ -101,6 +81,5 @@ public class GameSceneUIManager : UIManager_Base
                 Debug.Log("Turn phase not implemented");
                 break;
         }
-
     }
 }
