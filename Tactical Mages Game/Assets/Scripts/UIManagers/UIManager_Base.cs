@@ -15,4 +15,9 @@ public class UIManager_Base : MonoBehaviour
         AudioManager.instance.PlaySceneTransitionAudio(clip);
     }
 
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
 }
