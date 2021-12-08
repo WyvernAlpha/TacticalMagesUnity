@@ -9,6 +9,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource audioSourceMain;
     [SerializeField] private AudioSource audioSourceTransition;
     [SerializeField] private AudioSet gameSceneMusic;
+    [SerializeField] private AudioSet gameMenuMusic;
 
     private void Awake()
     {
@@ -43,6 +44,14 @@ public class AudioManager : MonoBehaviour
         audioSourceMain.Play();
     }
 
+    public void PlayGameMenuMusic()
+    {
+        audioSourceMain.clip = gameMenuMusic.clip;
+        audioSourceMain.volume = gameMenuMusic.volume;
+        audioSourceMain.pitch = gameMenuMusic.pitch;
+        audioSourceMain.Play();
+    }
+
     public void PlaySceneTransitionAudio(AudioClip clip)
     {
         audioSourceTransition.PlayOneShot(clip, audioSourceTransition.volume);
@@ -58,6 +67,11 @@ public class AudioManager : MonoBehaviour
         if (scene.name == GameManager.instance.GetGameSceneName())
         {
             PlayGameSceneMusic();
+        }
+
+        else if (scene.name == GameManager.instance.GetGameOverSceneName())
+        {
+            PlayGameMenuMusic();
         }
     }
 

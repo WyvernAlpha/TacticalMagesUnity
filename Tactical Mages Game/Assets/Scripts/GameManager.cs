@@ -99,6 +99,11 @@ public class GameManager : MonoBehaviour
         return gameSceneName;
     }
 
+    public string GetGameOverSceneName()
+    {
+        return gameOverSceneName;
+    }
+
     public void SetPlayers(List<Player> playerList)
     {
         if (Players.Count > 0)
