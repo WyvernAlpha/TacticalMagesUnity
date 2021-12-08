@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     [Tooltip("String name of the main game scene.")]
     [SerializeField] private string gameSceneName;
     [SerializeField] private string gameOverSceneName;
+    [SerializeField] private Character[] defaultTestCharacters;
+
     public int WinnerID { get; private set; }
     [SerializeField]public List<Player> Players { get; private set; } = new List<Player>();
     [SerializeField]
@@ -27,6 +29,18 @@ public class GameManager : MonoBehaviour
             Debug.Log("Additional GameManager has been found and destroyed.");
             Destroy(this.gameObject);
         }
+                
+        //Start with a default list of players if none currently exist (for testing game scene)
+        if (Players.Count == 0)
+        {            
+            Player player;
+            for (int i = 0; i < defaultTestCharacters.Length; i++)
+            {
+                player = new Player(i + 1, defaultTestCharacters[i]);
+                Players.Add(player);
+            }
+        }
+
     }
 
     private void Update()
@@ -86,6 +100,7 @@ public class GameManager : MonoBehaviour
         else
             currentTurn = 1;
 
+        Debug.Log("New turn: " + currentTurn);
         ProgressMatch();
     }
 
@@ -109,6 +124,7 @@ public class GameManager : MonoBehaviour
         if (Players.Count > 0)
         {
             Players.Clear();
+            Debug.Log($"Players cleared. Count is: {Players.Count}");
         }        
 
         Players = playerList;
@@ -117,7 +133,7 @@ public class GameManager : MonoBehaviour
 
     public Player GetPlayer(int playerID)
     {
-        Debug.Log($"GetPlayer(): Current turn = {currentTurn}; Local PlayerID = {playerID}");
+        //Debug.Log($"GetPlayer(): Current turn = {currentTurn}; Local PlayerID = {playerID}");
         return Players[playerID-1];
     }
 
