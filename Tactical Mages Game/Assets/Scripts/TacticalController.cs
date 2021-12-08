@@ -47,7 +47,7 @@ public class TacticalController : MonoBehaviour
     {
         //MOVEMENT PHASE
         GameSceneUIManager.instance.UpdateTurnPhaseUI(GameSceneUIManager.TurnPhase.MovePawn); // update UI
-        Debug.Log($"Player {GameManager.instance.currentTurn} MOVEMENT PHASE");        
+        Debug.Log($"Player {GameManager.instance.currentTurn} MOVEMENT PHASE");
         bool isMovementPhase = true;
         while (isMovementPhase)
         {
@@ -75,18 +75,21 @@ public class TacticalController : MonoBehaviour
                         selectedTile = hit.collider.GetComponent<Tile>();       //Selected tile is the one we just clicked on
                         previousPawn = selectedPawn;                            //Store Previous pawn is the one last selected
                         selectedPawn = hit.collider.GetComponent<Tile>().pawn;  //Current selected pawn is the one on top of this tile  
+                                                                                //Clear previous selected highlights tiles
+
 
                         //If the player selected a pawn and it belongs to the current player
                         if (selectedPawn != null && GameManager.instance.Players[GameManager.instance.currentTurn - 1].Pawns.Contains(selectedPawn.gameObject))
                         {
-                            //Clear previous selected highlights tiles
+
                             ClearPrevSelectables();
                             //Show movement for selected pawn
-                            selectedPawn.ShowMovement();                            
+                            selectedPawn.ShowMovement();
                         }
                         ///Else if the player selected an empty tile that is able to move their previous pawn to
                         else if (selectedPawn == null && previousPawn != null && selectableTiles.Contains(selectedTile))
-                        {  
+                        {
+                            ClearPrevSelectables();
                             MovePawn(previousPawn, selectedTile.transform.position);    //Move pawn to that tile                            
                             previousPawn.GetCurrentTile();                              //Assign tile to pawn
                             isMovementPhase = false;                                        //Selction phase is compelte
@@ -99,16 +102,34 @@ public class TacticalController : MonoBehaviour
                     }
                 }
             }
-            
+
             yield return null;
+        }
+
+        previousPawn = null;
+        selectedPawn = null;
+        previousTile = null;
+        selectedTile = null;
+        bool isAttackPhase = true;
+        for (int i = 0; i < GameManager.instance.Players[GameManager.instance.currentTurn - 1].Pawns.Count; i++)
+        {
+            if (GameManager.instance.Players[GameManager.instance.currentTurn - 1].Pawns[i].GetComponent<Pawn>().CanAttack())
+            {
+                isAttackPhase = true;
+                break;
+            }
+            else
+            {
+                isAttackPhase = false;
+            }
         }
 
         //ATTACK PHASE
         GameSceneUIManager.instance.UpdateTurnPhaseUI(GameSceneUIManager.TurnPhase.AttackOrPass); // update UI
         Debug.Log($"Player {GameManager.instance.currentTurn} ATTACK PHASE");
-        bool isAttackPhase = true;
         while (isAttackPhase)
         {
+            
             //If player presses spacebar, skip attack phase
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -132,28 +153,33 @@ public class TacticalController : MonoBehaviour
                         selectedTile = hit.collider.GetComponent<Tile>();       //Selected tile is the one we just clicked on
                         previousPawn = selectedPawn;                            //Store Previous pawn is the one last selected
                         selectedPawn = selectedTile.pawn;                       //Current selected pawn is the one on top of this tile
-
                         //If the player selected a pawn and it belongs to the current player
                         if (selectedPawn != null && GameManager.instance.Players[GameManager.instance.currentTurn - 1].Pawns.Contains(selectedPawn.gameObject))
                         {
-                            //Clear previous selected highlights tiles
-                            ClearPrevSelectables();
-                            //TODO: Show enemy's in range for selected pawn
-                            selectedPawn.ShowMovement(); // change to ShowEnemysInRange();
+                                //Clear previous selected highlights tiles
+                                ClearPrevSelectables();
+                            if (selectedPawn.CanAttack())
+                            {
+
+                                //TODO: Show enemy's in range for selected pawn
+                                selectedPawn.ShowMovement(1); // change to ShowEnemysInRange();
+                            }
                         }
 
                         //Else if the player selected an enemy pawn that is in range of their pawn
-                        else if (selectedPawn != null && previousPawn != null && selectableTiles.Contains(selectedTile))                        
+                        else if (selectedPawn != null && previousPawn != null && selectableTiles.Contains(selectedTile))
                         {
                             //if the previous pawn is mine
-                            if (GameManager.instance.Players[GameManager.instance.currentTurn - 1].Pawns.Contains(previousPawn.gameObject))
+                            if (GameManager.instance.Players[GameManager.instance.currentTurn - 1].Pawns.Contains(previousPawn.gameObject) && previousPawn.CanAttack())
                             {
                                 //Clear the tile highlights
-                                ClearPrevSelectables();
 
                                 //Attack the enemy pawn with my pawn and end attack phase
                                 previousPawn.Attack(selectedPawn);
                                 isAttackPhase = false;
+                                ClearPrevSelectables();
+                                previousPawn.GetCurrentTile();
+
                             }
                         }
                         else
@@ -164,6 +190,8 @@ public class TacticalController : MonoBehaviour
                 }
             }
 
+            
+            
             yield return null;
         }
 
@@ -174,7 +202,7 @@ public class TacticalController : MonoBehaviour
         GameManager.instance.EndTurn();
     }
 
-    
+
 
     void ClearPrevSelectables()
     {
@@ -200,6 +228,7 @@ public class TacticalController : MonoBehaviour
     {
         pawn.currentTile.pawn = null;
         pawn.transform.position = new Vector3(position.x, 0.15f, position.z);
+        pawn.GetCurrentTile();
     }
-    
+
 }

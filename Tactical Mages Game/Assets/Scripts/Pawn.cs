@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[SelectionBase]
 public class Pawn : MonoBehaviour
 {
     [Tooltip("The pawn data object for this pawn.")]
@@ -50,6 +51,21 @@ public class Pawn : MonoBehaviour
         
     }
 
+    public bool CanAttack()
+    {
+        for (int i = 0; i < currentTile.neighborTiles.Count; i++)
+        {
+            if (currentTile.neighborTiles[i].pawn != null)
+            {
+                if (!GameManager.instance.Players[GameManager.instance.currentTurn - 1].Pawns.Contains(currentTile.neighborTiles[i].pawn.gameObject))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     //public List<Tile> ShowMovement()
     //{
     //   // currentTile.HighlightTilesToMoveTo(pawnData.movementRange, playerID);
@@ -62,6 +78,10 @@ public class Pawn : MonoBehaviour
         currentTile.GetTilesList(pawnData.movementRange);
     }
 
+    public void ShowMovement(int attackRange)
+    {
+        currentTile.GetTilesList(attackRange);
+    }
 
     public void GetCurrentTile()
     {
@@ -194,6 +214,7 @@ public class Pawn : MonoBehaviour
         //TODO: Sound & Death Animation
 
         Debug.Log($"{this.name} has been killed.");
+        GameManager.instance.Players[GameManager.instance.currentTurn - 1].Pawns.Remove(this.gameObject);
         Destroy(this.gameObject);
     }
 }

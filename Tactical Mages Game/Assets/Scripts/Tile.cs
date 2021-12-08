@@ -106,6 +106,5 @@ public class Tile : MonoBehaviour
     {
         canMoveChecked = false;
         tileImage.color = baseColor;
-        pawn = null;
     }
 }
