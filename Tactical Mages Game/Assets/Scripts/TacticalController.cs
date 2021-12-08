@@ -5,7 +5,7 @@ using UnityEngine;
 public class TacticalController : MonoBehaviour
 {
     public static TacticalController instance;
-    //public bool isMovementPhase = false;
+    [SerializeField] private float pawnSpawnY;
 
     [SerializeField]
     Pawn selectedPawn = null;
@@ -227,7 +227,7 @@ public class TacticalController : MonoBehaviour
     void MovePawn(Pawn pawn, Vector3 position)
     {
         pawn.currentTile.pawn = null;
-        pawn.transform.position = new Vector3(position.x, 0.15f, position.z);
+        pawn.transform.position = new Vector3(position.x, pawnSpawnY, position.z);
         pawn.GetCurrentTile();
     }
 
