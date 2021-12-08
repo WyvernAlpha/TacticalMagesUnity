@@ -4485,10 +4485,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1041137515}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 884a26ab263de7c44aadfbfcdf64b716, type: 3}
+  m_Script: {fileID: 11500000, guid: 8959236250f1d5d4a94be0900926396c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isTurn: 0
   selectedPawn: {fileID: 0}
   hashSetLength: 0
   selectedTile: {fileID: 0}
