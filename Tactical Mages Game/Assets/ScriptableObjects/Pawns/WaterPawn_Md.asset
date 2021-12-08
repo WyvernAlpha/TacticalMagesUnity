@@ -16,7 +16,7 @@ MonoBehaviour:
   spriteWidth: 0.5
   spriteHeight: 0.7
   spriteTint: {r: 1, g: 1, b: 1, a: 1}
-  health: 6
+  health: 2
   attackDamage: 2
   attackRotationSpeed: 3
   attackMovementSpeed: 5

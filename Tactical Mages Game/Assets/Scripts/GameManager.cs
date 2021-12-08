@@ -91,6 +91,10 @@ public class GameManager : MonoBehaviour
             Debug.Log("Current turn: " + currentTurn);
             TacticalController.instance.StartTurn();
         }
+        else
+        {
+            LoadScene(gameOverSceneName);
+        }
     }
 
     public void EndTurn()
@@ -107,6 +111,11 @@ public class GameManager : MonoBehaviour
     public void LoadScene(string sceneToLoad)
     {
         SceneManager.LoadScene(sceneToLoad);
+    }
+
+    public void LoadEndScene()
+    {
+        SceneManager.LoadScene(gameOverSceneName);
     }
 
     public string GetGameSceneName()

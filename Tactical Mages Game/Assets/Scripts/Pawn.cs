@@ -217,4 +217,12 @@ public class Pawn : MonoBehaviour
         GameManager.instance.Players[GameManager.instance.currentTurn - 1].Pawns.Remove(this.gameObject);
         Destroy(this.gameObject);
     }
+
+    private void OnDestroy()
+    {
+        if (GameManager.instance.IsVictory())
+        {
+            GameManager.instance.LoadEndScene();
+        }
+    }
 }
