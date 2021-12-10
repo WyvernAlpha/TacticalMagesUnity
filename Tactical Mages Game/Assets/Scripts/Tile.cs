@@ -79,7 +79,7 @@ public class Tile : MonoBehaviour
                     if (neighborTiles[i].pawn != null)
                     {
                         //Debug.Log($"GetTilesList() top: Current turn = {GameManager.instance.currentTurn}; Local PlayerID = {playerID}");
-                        Player currentPlayer = GameManager.instance.GetPlayer(GameManager.instance.currentTurn);
+                        Player currentPlayer = GameManager.instance.GetPlayerOfTurn();
                         if (!currentPlayer.Pawns.Contains(neighborTiles[i].pawn.gameObject))
                         {
                             TacticalController.instance.selectableTiles.Add(neighborTiles[i]);

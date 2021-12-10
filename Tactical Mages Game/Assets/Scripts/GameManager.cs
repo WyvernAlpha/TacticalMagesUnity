@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Additional GameManager has been found and destroyed.");
+            //Debug.Log("Additional GameManager has been found and destroyed.");
             Destroy(this.gameObject);
         }
                 
@@ -84,11 +84,11 @@ public class GameManager : MonoBehaviour
 
    public void ProgressMatch()
     {
-        Debug.Log("Fight!");
+        //Debug.Log("Fight!");
 
         if(!IsVictory())
         {
-            Debug.Log("Current turn: " + currentTurn);
+            //Debug.Log("Current turn: " + currentTurn);
             TacticalController.instance.StartTurn();
         }
         else
@@ -98,13 +98,44 @@ public class GameManager : MonoBehaviour
     }
 
     public void EndTurn()
-    {        
-        if (currentTurn < Players.Count && currentTurn != Players.Count)
-            currentTurn++;
-        else
-            currentTurn = 1;
+    {
+        Debug.Log("Ending turn for player " + GetPlayerOfTurn().PlayerID + ". Current turn number is " + currentTurn);
 
-        Debug.Log("New turn: " + currentTurn);
+        //If any players have lost all pawns, remove them from the list and adjust turn
+        for (int i = Players.Count - 1; i >= 0; i--)
+        {
+            if (Players[i].Pawns.Count <= 0)
+            {
+                Debug.Log($"Player {Players[i].PlayerID} has died and been removed. Player count is now {Players.Count - 1}"); 
+                Players.RemoveAt(i);                
+
+                if (currentTurn > Players.Count)
+                {
+                    Debug.Log($"Due to player death, current turn (turn {currentTurn}) exceeds player count of {Players.Count}. Current turn is now set to {Players.Count}.");
+                    currentTurn = Players.Count;
+                }
+                //else if (currentTurn < Players.Count)
+                //{
+                //    currentTurn++;
+                //}
+                                
+            }
+        }
+
+        //Calculate turn number
+        if (currentTurn < Players.Count && currentTurn != Players.Count)
+        {
+            currentTurn++;
+            Debug.Log("Current turn is less than count of players. Current turn is now: " + currentTurn);
+        }
+
+        else
+        {
+            currentTurn = 1;
+            Debug.Log("Last player in list has taken turn. First player's turn starts now.");
+        }
+
+        //Debug.Log("New turn for Player: " + currentTurn + ", who is Player " + Players[currentTurn -1].Character.Type);
         ProgressMatch();
     }
 
@@ -133,18 +164,40 @@ public class GameManager : MonoBehaviour
         if (Players.Count > 0)
         {
             Players.Clear();
-            Debug.Log($"Players cleared. Count is: {Players.Count}");
+            //Debug.Log($"Players cleared. Count is: {Players.Count}");
         }        
 
         Players = playerList;
-        Debug.Log("Player Count: " + Players.Count);
+        //Debug.Log("Player Count: " + Players.Count);
     }
 
-    public Player GetPlayer(int playerID)
+    public Player GetPlayerByID(int playerID)
     {
-        //Debug.Log($"GetPlayer(): Current turn = {currentTurn}; Local PlayerID = {playerID}");
-        return Players[playerID-1];
+        Player player = null;
+        
+        for (int i = 0; i < Players.Count; i++)
+        {
+            if (Players[i].PlayerID == playerID)
+            {
+                player = Players[i];
+            }
+        }
+
+        if (player == null)
+        {
+            Debug.LogError("Error: Player not found when searched in GetPlayer()!");
+        }
+
+        return player;
     }
+
+    public Player GetPlayerOfTurn()
+    {
+        //Debug.Log("Getting player of turn. Current turn = " + currentTurn);
+        
+        return Players[currentTurn - 1];
+    }
+
 
     public bool IsVictory()
     {

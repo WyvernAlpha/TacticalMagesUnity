@@ -18,8 +18,8 @@ MonoBehaviour:
   spriteTint: {r: 1, g: 1, b: 1, a: 1}
   health: 2
   attackDamage: 2
-  attackRotationSpeed: 1
-  attackMovementSpeed: 1.5
+  attackRotationSpeed: 3
+  attackMovementSpeed: 5
   attackSound: {fileID: 8300000, guid: d8b54c7328d3ae74ca71480bf854f8bf, type: 3}
   attackSoundVolume: 1
   movementRange: 2

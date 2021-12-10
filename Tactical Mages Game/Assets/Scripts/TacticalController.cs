@@ -20,6 +20,8 @@ public class TacticalController : MonoBehaviour
     [SerializeField]
     LayerMask layerMask;
 
+    public bool isTurnComplete { get; private set; } = true;
+
     private void Awake()
     {
         //Singleton of TacticalController instance
@@ -38,16 +40,20 @@ public class TacticalController : MonoBehaviour
     // Start is called before the first frame update
     public void StartTurn()
     {
-        Debug.Log($"Player {GameManager.instance.currentTurn} turn started.");
-        StartCoroutine(TakeTurn());
+        if (isTurnComplete)
+        {
+            Debug.Log($"Player {GameManager.instance.currentTurn} turn started.");
+            StartCoroutine(TakeTurn());
+        }
     }
 
 
     private IEnumerator TakeTurn()
     {
+        isTurnComplete = false;
         //MOVEMENT PHASE
         GameSceneUIManager.instance.UpdateTurnPhaseUI(GameSceneUIManager.TurnPhase.MovePawn); // update UI
-        Debug.Log($"Player {GameManager.instance.currentTurn} MOVEMENT PHASE");
+        Debug.Log($"Player {GameManager.instance.currentTurn} MOVEMENT PHASE. Has " + GameManager.instance.GetPlayerOfTurn().Pawns.Count + " pawns total.");
         bool isMovementPhase = true;
         while (isMovementPhase)
         {
@@ -79,7 +85,7 @@ public class TacticalController : MonoBehaviour
 
 
                         //If the player selected a pawn and it belongs to the current player
-                        if (selectedPawn != null && GameManager.instance.Players[GameManager.instance.currentTurn - 1].Pawns.Contains(selectedPawn.gameObject))
+                        if (selectedPawn != null && GameManager.instance.GetPlayerOfTurn().Pawns.Contains(selectedPawn.gameObject))
                         {
 
                             ClearPrevSelectables();
@@ -92,8 +98,7 @@ public class TacticalController : MonoBehaviour
                             ClearPrevSelectables();
                             MovePawn(previousPawn, selectedTile.transform.position);    //Move pawn to that tile                            
                             previousPawn.GetCurrentTile();                              //Assign tile to pawn
-                            isMovementPhase = false;                                        //Selction phase is compelte
-                            //GameManager.instance.EndTurn();                             //End Turn
+                            isMovementPhase = false;                                    //Selction phase is compelte                            
                         }
                         else
                         {
@@ -103,33 +108,51 @@ public class TacticalController : MonoBehaviour
                 }
             }
 
+
             yield return null;
         }
+
 
         previousPawn = null;
         selectedPawn = null;
         previousTile = null;
         selectedTile = null;
-        bool isAttackPhase = true;
-        for (int i = 0; i < GameManager.instance.Players[GameManager.instance.currentTurn - 1].Pawns.Count; i++)
+        bool isAttackPhase = false;
+                
+        Debug.Log("Entering for-loop to check for null pawns before attack()");
+
+        //Check pawns in reverse in case any have been killed
+        for (int i = GameManager.instance.GetPlayerOfTurn().Pawns.Count - 1; i >= 0; i--)
         {
-            if (GameManager.instance.Players[GameManager.instance.currentTurn - 1].Pawns[i].GetComponent<Pawn>().CanAttack())
+            //If pawn is null, remove it from list and continue
+            if (GameManager.instance.GetPlayerOfTurn().Pawns[i] == null)
             {
+                GameManager.instance.GetPlayerOfTurn().Pawns.RemoveAt(i);
+                continue;
+            }
+
+            //If pawn can attack, enter attack phase
+            if (GameManager.instance.GetPlayerOfTurn().Pawns[i].GetComponent<Pawn>().CanAttack())
+            {                
                 isAttackPhase = true;
                 break;
             }
+
+            //Else no pawns can attack, do not enter attack phase
             else
             {
                 isAttackPhase = false;
             }
         }
 
+        Debug.Log("Out of pawn null-check. Updating UI attack phase");
+
         //ATTACK PHASE
-        GameSceneUIManager.instance.UpdateTurnPhaseUI(GameSceneUIManager.TurnPhase.AttackOrPass); // update UI
-        Debug.Log($"Player {GameManager.instance.currentTurn} ATTACK PHASE");
+        GameSceneUIManager.instance.UpdateTurnPhaseUI(GameSceneUIManager.TurnPhase.AttackOrPass); // update UI        
         while (isAttackPhase)
         {
-            
+            Debug.Log("Attack phase while loop");
+
             //If player presses spacebar, skip attack phase
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -154,10 +177,10 @@ public class TacticalController : MonoBehaviour
                         previousPawn = selectedPawn;                            //Store Previous pawn is the one last selected
                         selectedPawn = selectedTile.pawn;                       //Current selected pawn is the one on top of this tile
                         //If the player selected a pawn and it belongs to the current player
-                        if (selectedPawn != null && GameManager.instance.Players[GameManager.instance.currentTurn - 1].Pawns.Contains(selectedPawn.gameObject))
+                        if (selectedPawn != null && GameManager.instance.GetPlayerOfTurn().Pawns.Contains(selectedPawn.gameObject))
                         {
-                                //Clear previous selected highlights tiles
-                                ClearPrevSelectables();
+                            //Clear previous selected highlights tiles
+                            ClearPrevSelectables();
                             if (selectedPawn.CanAttack())
                             {
 
@@ -170,36 +193,53 @@ public class TacticalController : MonoBehaviour
                         else if (selectedPawn != null && previousPawn != null && selectableTiles.Contains(selectedTile))
                         {
                             //if the previous pawn is mine
-                            if (GameManager.instance.Players[GameManager.instance.currentTurn - 1].Pawns.Contains(previousPawn.gameObject) && previousPawn.CanAttack())
+                            if (GameManager.instance.GetPlayerOfTurn().Pawns.Contains(previousPawn.gameObject) && previousPawn.CanAttack())
                             {
                                 //Clear the tile highlights
 
-                                //Attack the enemy pawn with my pawn and end attack phase
+                                //Attack the enemy pawn with my pawn 
                                 previousPawn.Attack(selectedPawn);
-                                isAttackPhase = false;
                                 ClearPrevSelectables();
                                 previousPawn.GetCurrentTile();
 
+                                //Wait for opponent pawn to receive damage or die
+                                while (selectedPawn != null && !selectedPawn.isDamageCompleted)
+                                {
+                                    yield return null;
+                                }
+
+                                if (selectedPawn == null)
+                                {
+                                    Debug.Log("Pawn is DEAD");
+                                }
+                                else if (selectedPawn.isDamageCompleted == true)
+                                {
+                                    Debug.Log($"{selectedPawn.name} is damaged but alive...");
+                                    //end attack phase                                   
+                                }
+
+                                isAttackPhase = false;
                             }
-                        }
-                        else
-                        {
-                            Debug.Log($"Unanticipated condition in Attack Phase.");
+                            else
+                            {
+                                Debug.Log($"Unanticipated condition in Attack Phase.");
+                            }
                         }
                     }
                 }
+                yield return null;
             }
 
-            
-            
-            yield return null;
+            yield return null;   
         }
-
 
         //GameManger -> CheckForVictory() (actually better to do this in pawn OnDestroy() event)
 
+        isTurnComplete = true;
+
         //End Turn
         GameManager.instance.EndTurn();
+
     }
 
 
@@ -232,3 +272,5 @@ public class TacticalController : MonoBehaviour
     }
 
 }
+
+

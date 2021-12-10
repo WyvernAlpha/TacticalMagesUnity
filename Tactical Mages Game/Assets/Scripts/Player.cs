@@ -23,7 +23,9 @@ public class Player
 
     public void AddPawn(GameObject pawn)
     {
+        //Add pawn to list and assign it my player iD
         Pawns.Add(pawn);
+        pawn.GetComponent<Pawn>().SetPlayerIDOwner(PlayerID);
     }
 
    

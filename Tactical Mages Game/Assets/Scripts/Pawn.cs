@@ -15,6 +15,7 @@ public class Pawn : MonoBehaviour
     private float attackRotationSpeed = 1.0f;
     private float attackMovementSpeed = 1.5f;
     private int movementRange = 1;
+    public int PlayerIDOwner { get; private set; }
 
     [SerializeField]
     private Image pawnImage;
@@ -25,6 +26,7 @@ public class Pawn : MonoBehaviour
     [SerializeField]
     LayerMask layerMask;
     public Tile currentTile;
+    public bool isDamageCompleted { get; private set; } = false;
 
     // Start is called before the first frame update
     void Start()
@@ -50,6 +52,14 @@ public class Pawn : MonoBehaviour
     {
         
     }
+    /// <summary>
+    /// Set this pawn to belong to this specific player.
+    /// </summary>
+    /// <param name="playerID"></param>
+    public void SetPlayerIDOwner(int playerID)
+    {
+        PlayerIDOwner = playerID;
+    }
 
     public bool CanAttack()
     {
@@ -57,7 +67,7 @@ public class Pawn : MonoBehaviour
         {
             if (currentTile.neighborTiles[i].pawn != null)
             {
-                if (!GameManager.instance.Players[GameManager.instance.currentTurn - 1].Pawns.Contains(currentTile.neighborTiles[i].pawn.gameObject))
+                if (!GameManager.instance.GetPlayerOfTurn().Pawns.Contains(currentTile.neighborTiles[i].pawn.gameObject))
                 {
                     return true;
                 }
@@ -114,11 +124,12 @@ public class Pawn : MonoBehaviour
 
     public void Attack(Pawn opponentPawn)
     {
+        opponentPawn.SetIsDamageCompleted(false);
         StartCoroutine(DoAttack(opponentPawn));
     }
 
     private IEnumerator DoAttack(Pawn opponentPawn)
-    {
+    {        
         //Store starting rotation
         Quaternion originalRotation = transform.rotation;
 
@@ -192,7 +203,7 @@ public class Pawn : MonoBehaviour
 
         //Deal damage to opponent
         opponentPawn.TakeDamage(attackDamage);
-
+        
         yield return null;
     }
 
@@ -207,6 +218,15 @@ public class Pawn : MonoBehaviour
         {
             Die();
         }
+        else
+        {
+            SetIsDamageCompleted(true);
+        }
+    }
+
+    public void SetIsDamageCompleted(bool value)
+    {
+        isDamageCompleted = value;
     }
 
     public void Die()
@@ -214,12 +234,13 @@ public class Pawn : MonoBehaviour
         //TODO: Sound & Death Animation
 
         Debug.Log($"{this.name} has been killed.");
-        GameManager.instance.Players[GameManager.instance.currentTurn - 1].Pawns.Remove(this.gameObject);
+        //TODO: Remove from correct player!
+        GameManager.instance.GetPlayerByID(PlayerIDOwner).Pawns.Remove(this.gameObject);
         Destroy(this.gameObject);
     }
 
     private void OnDestroy()
-    {
+    {     
         if (GameManager.instance.IsVictory())
         {
             GameManager.instance.LoadEndScene();

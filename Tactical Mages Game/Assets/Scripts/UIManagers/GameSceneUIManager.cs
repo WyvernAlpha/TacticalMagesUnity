@@ -62,8 +62,8 @@ public class GameSceneUIManager : UIManager_Base
         //If it's the first phase of the turn, set appropriate player color and prompt
         if ((int)phase == 0)
         {
-            SetPlayerText(GameManager.instance.currentTurn);
-            ChangeBackgroundColor(GameManager.instance.Players[GameManager.instance.currentTurn - 1].Character.DefaultColor);
+            SetPlayerText(GameManager.instance.GetPlayerOfTurn().PlayerID);
+            ChangeBackgroundColor(GameManager.instance.GetPlayerOfTurn().Character.DefaultColor);
         }
         
         //Update instuctions text per phase
